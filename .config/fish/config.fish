@@ -38,6 +38,21 @@ end
 alias cat "bat --plain"
 alias less cat
 
+# Replace diff command with a more usefull git command
+function diff
+    git diff --name-only --relative --diff-filter=d | xargs bat --diff
+end
+
+# Git typo
+function got
+    echo "Hey! Fat fingers!!!"
+    git $argv
+end
+
+alias gti got
+alias gto got
+alias tgi got
+
 # neofetch
 alias n neofetch
 
@@ -52,8 +67,8 @@ function help
 end
 
 # Alias for quick and dirty git commit
-alias g "git pull && git commit -am 'Updates'; git push"
-alias gg "git pull && git add .; git commit -m 'Updates'; git push"
+alias g "git commit -am 'Updates!'; git pull; git push"
+alias gg "git add .; git commit -m 'Witness me!!!'; git pull; git push"
 
 # Add navcoin alias
 alias nav navcoin-cli
