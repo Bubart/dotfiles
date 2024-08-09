@@ -23,14 +23,33 @@ require("lazy").setup({
     -- Cause git is <3
     "tpope/vim-fugitive",
 
+    -- DB Client
+    {
+        "kristijanhusak/vim-dadbod-ui",
+        dependencies = {
+            { "tpope/vim-dadbod",                     lazy = true },
+            { "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
+        },
+        cmd = {
+            "DBUI",
+            "DBUIToggle",
+            "DBUIAddConnection",
+            "DBUIFindBuffer",
+        },
+        init = function()
+            -- Your DBUI configuration
+            vim.g.db_ui_use_nerd_fonts = true
+        end,
+    },
+
     -- We need to talk to tmux while navigating
-    { 'christoomey/vim-tmux-navigator' },
+    { "christoomey/vim-tmux-navigator" },
 
     -- What are we pressing
-    { 'folke/which-key.nvim', opts = {} },
+    { "folke/which-key.nvim",          opts = {} },
 
     -- "gc" to comment visual regions/lines
-    { 'numToStr/Comment.nvim', opts = {} },
+    { "numToStr/Comment.nvim",         opts = {} },
 
     -- Fuzzy Finder (files, lsp, etc)
     { "nvim-telescope/telescope.nvim", version = "*", dependencies = { "nvim-lua/plenary.nvim" } },
@@ -62,16 +81,16 @@ require("lazy").setup({
         "smoka7/multicursors.nvim",
         event = "VeryLazy",
         dependencies = {
-            'smoka7/hydra.nvim',
+            "smoka7/hydra.nvim",
         },
         opts = {},
-        cmd = { 'MCstart', 'MCvisual', 'MCclear', 'MCpattern', 'MCvisualPattern', 'MCunderCursor' },
+        cmd = { "MCstart", "MCvisual", "MCclear", "MCpattern", "MCvisualPattern", "MCunderCursor" },
         keys = {
             {
-                mode = { 'v', 'n' },
-                '<Leader>n',
-                '<cmd>MCstart<cr>',
-                desc = 'Create a selection for selected text or word under the cursor',
+                mode = { "v", "n" },
+                "<leader>n",
+                "<cmd>MCstart<cr>",
+                desc = "Create a selection for selected text or word under the cursor",
             },
         },
     },
@@ -85,6 +104,26 @@ require("lazy").setup({
                 -- Configuration here, or leave empty to use defaults
             })
         end
+    },
+
+    -- Noice CmdLine
+    {
+        "folke/noice.nvim",
+        event = "VeryLazy",
+        opts = {
+        },
+        dependencies = {
+            "MunifTanjim/nui.nvim",
+            -- nvim-notify disable animations
+            {
+                "rcarriga/nvim-notify",
+                event = "VeryLazy",
+                opts = {
+                    animate = false,
+                    stages = "static",
+                }
+            },
+        }
     },
 
     { import = "plugins" },

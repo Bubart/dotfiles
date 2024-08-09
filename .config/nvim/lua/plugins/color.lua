@@ -4,6 +4,7 @@ return { -- Setup tokyonight options
     priority = 1000,
     opts = {
         style = "night",
-        transparent = true,
+        transparent = false,
+        plugins = { auto = false },
     },
 }

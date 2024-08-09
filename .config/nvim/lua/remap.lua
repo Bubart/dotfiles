@@ -2,11 +2,16 @@
 
 -- Keymaps for better default experience
 -- See `:help vim.keymap.set()`
-vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true })
+vim.keymap.set({ "n", "v" }, "<space>", "<nop>", { silent = true })
 
 -- Remap for dealing with word wrap
-vim.keymap.set("n", "k", 'v:count == 0 ? "gk" : "k"', { expr = true, silent = true })
-vim.keymap.set("n", "j", 'v:count == 0 ? "gj" : "j"', { expr = true, silent = true })
+vim.keymap.set("n", "k", "v:count == 0 ? \"gk\" : \"k\"", { expr = true, silent = true })
+vim.keymap.set("n", "j", "v:count == 0 ? \"gj\" : \"j\"", { expr = true, silent = true })
+
+-- Mappings for tabs
+vim.keymap.set("n", "<leader>k", "<cmd>tabnext<cr>", { desc = "Next tab" })
+vim.keymap.set("n", "<leader>j", "<cmd>tabprev<cr>", { desc = "Previous tab" })
+vim.keymap.set("n", "<leader>t", "<cmd>tabnew<cr><cmd>Telescope find_files<cr>", { desc = "New tab (Search files)" })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -19,44 +24,63 @@ vim.api.nvim_create_autocmd("TextYankPost", {
     pattern = "*",
 })
 
+local vimgrep_arguments = { unpack(require("telescope.config").values.vimgrep_arguments) }
+table.insert(vimgrep_arguments, "--hidden")
+table.insert(vimgrep_arguments, "--glob")
+table.insert(vimgrep_arguments, "!**/.git/*")
+
 -- [[ Configure Telescope ]]
 -- See `:help telescope` and `:help telescope.setup()`
 require("telescope").setup {
     defaults = {
-        mappings = {
-            i = {
-                ["<C-u>"] = false,
-                ["<C-d>"] = false,
-            },
-        },
+        vimgrep_arguments = vimgrep_arguments,
     },
+
+    pickers = {
+        find_files = {
+            find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" }
+        }
+    }
 }
 
 -- Enable telescope fzf native, if installed
 pcall(require("telescope").load_extension, "fzf")
 
 -- See `:help telescope.builtin`
-vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "[?] Find recently opened files" })
-vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "[ ] Find existing buffers" })
+vim.keymap.set("n", "<leader>?", require("telescope.builtin").oldfiles, { desc = "Search recent files" })
+vim.keymap.set("n", "<leader><space>", require("telescope.builtin").buffers, { desc = "Search buffers" })
 vim.keymap.set("n", "<leader>/", function()
     -- You can pass additional configuration to telescope to change theme, layout, etc.
     require("telescope.builtin").current_buffer_fuzzy_find(require("telescope.themes").get_dropdown {
         winblend = 10,
         previewer = false,
     })
-end, { desc = "[/] Fuzzily search in current buffer" })
+end, { desc = "Search current buffer" })
 
-vim.keymap.set("n", "<leader>sf", require("telescope.builtin").find_files, { desc = "[S]earch [F]iles" })
-vim.keymap.set("n", "<leader>sh", require("telescope.builtin").help_tags, { desc = "[S]earch [H]elp" })
-vim.keymap.set("n", "<leader>sw", require("telescope.builtin").grep_string, { desc = "[S]earch current [W]ord" })
-vim.keymap.set("n", "<leader>sg", require("telescope.builtin").live_grep, { desc = "[S]earch by [G]rep" })
-vim.keymap.set("n", "<leader>sd", require("telescope.builtin").diagnostics, { desc = "[S]earch [D]iagnostics" })
+vim.keymap.set("n", "<leader>ff", require("telescope.builtin").find_files, { desc = "Find files" })
+vim.keymap.set("n", "<leader>fF", require("telescope.builtin").git_files, { desc = "Find files (git repo)" })
+vim.keymap.set("n", "<leader>fd", require("telescope.builtin").live_grep, { desc = "Grep files" })
+vim.keymap.set("n", "<leader>f*", require("telescope.builtin").grep_string, { desc = "Grep current word" })
+vim.keymap.set("n", "<leader>fs", require("telescope.builtin").git_status, { desc = "Find files (git status)" })
+vim.keymap.set("n", "<leader>fh", require("telescope.builtin").help_tags, { desc = "Search help" })
+vim.keymap.set("n", "<leader>fD", require("telescope.builtin").diagnostics, { desc = "Search diagnostics" })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require("nvim-treesitter.configs").setup {
     -- Add languages to be installed here that you want installed for treesitter
-    ensure_installed = { "c", "cpp", "go", "lua", "python", "rust", "tsx", "typescript", "vimdoc", "vim" },
+    ensure_installed = {
+        "c",
+        "cpp",
+        "go",
+        "lua",
+        "python",
+        "rust",
+        "tsx",
+        "typescript",
+        "vim",
+        "vimdoc",
+    },
 
     -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
     auto_install = false,
@@ -121,50 +145,63 @@ require("nvim-treesitter.configs").setup {
 -- Diagnostic keymaps
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, { desc = "Go to previous diagnostic message" })
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, { desc = "Go to next diagnostic message" })
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
+vim.keymap.set("n", "<leader>Q", vim.diagnostic.open_float, { desc = "Open floating diagnostic message" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
--- LSP settings.
---  This function gets run when an LSP connects to a particular buffer.
-local on_attach = function(_, bufnr)
-    -- NOTE: Remember that lua is a real programming language, and as such it is possible
-    -- to define small helper and utility functions so you don"t have to repeat yourself
-    -- many times.
-    --
-    -- In this case, we create a function that lets us more easily define mappings specific
-    -- for LSP related items. It sets the mode, buffer and description for us each time.
-    local nmap = function(keys, func, desc)
-        if desc then
-            desc = "LSP: " .. desc
-        end
+-- Dismiss Noice Notifications
+vim.keymap.set("n", "<leader>m", "<cmd>NoiceDismiss<cr>", { desc = "Dismiss notifications" })
 
-        vim.keymap.set("n", keys, func, { buffer = bufnr, desc = desc })
+-- Toggle DBUI for DadBod
+vim.keymap.set("n", "<leader>d", "<cmd>DBUIToggle<cr>", { desc = "Toggle database client" })
+
+-- Git stuff
+require("gitsigns").setup {
+    on_attach = function()
+        local gitsigns = require("gitsigns")
+
+        -- Navigation
+        vim.keymap.set("n", "]c", function()
+            if vim.wo.diff then
+                vim.cmd.normal({ "]c", bang = true })
+            else
+                gitsigns.nav_hunk("next")
+            end
+        end)
+
+        vim.keymap.set("n", "[c", function()
+            if vim.wo.diff then
+                vim.cmd.normal({ "[c", bang = true })
+            else
+                gitsigns.nav_hunk("prev")
+            end
+        end)
+
+        -- Actions
+        vim.keymap.set("n", "<leader>gr", gitsigns.reset_hunk, { desc = "Git reset hunk" })
+        vim.keymap.set("v", "<leader>gr", function() gitsigns.reset_hunk { vim.fn.line("."), vim.fn.line("v") } end,
+            { desc = "Git reset hunk" })
+        vim.keymap.set("n", "<leader>gs", gitsigns.stage_hunk, { desc = "Git stage hunk" })
+        vim.keymap.set("v", "<leader>gs", function() gitsigns.stage_hunk { vim.fn.line("."), vim.fn.line("v") } end,
+            { desc = "Git stage hunk" })
+        vim.keymap.set("n", "<leader>gS", gitsigns.stage_buffer, { desc = "Git stage buffer" })
+        vim.keymap.set("n", "<leader>gR", gitsigns.reset_buffer, { desc = "Git reset buffer" })
+        vim.keymap.set("n", "<leader>gp", gitsigns.preview_hunk, { desc = "Git preview hunk" })
+        vim.keymap.set("n", "<leader>gb", gitsigns.blame, { desc = "Git blame" })
+        vim.keymap.set("n", "<leader>gd", gitsigns.diffthis, { desc = "Git diff" })
+        vim.keymap.set("n", "<leader>gD", function() gitsigns.diffthis("~") end, { desc = "Git diff full" })
+        vim.keymap.set("n", "<leader>gtb", gitsigns.toggle_current_line_blame, { desc = "Git toggle blame line" })
+        vim.keymap.set("n", "<leader>gtd", gitsigns.toggle_deleted, { desc = "Git toggle delete" })
+
+        -- Text object
+        vim.keymap.set({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
     end
+}
 
-    nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
-    nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
+-- Add mappings for commit and push
+vim.keymap.set("n", "<leader>gg", "<cmd>tab Git commit<cr>", { desc = "Git commit" })
+vim.keymap.set("n", "<leader>gf", "<cmd>Git fetch --all<cr>", { desc = "Git fetch all" })
+vim.keymap.set("n", "<leader>gj", "<cmd>Git pull<cr>", { desc = "Git pull" })
+vim.keymap.set("n", "<leader>gk", "<cmd>Git push<cr>", { desc = "Git push" })
 
-    nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-    nmap("gr", require("telescope.builtin").lsp_references, "[G]oto [R]eferences")
-    nmap("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-    nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-    nmap("<leader>ds", require("telescope.builtin").lsp_document_symbols, "[D]ocument [S]ymbols")
-    nmap("<leader>ws", require("telescope.builtin").lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-
-    -- See `:help K` for why this keymap
-    nmap("K", vim.lsp.buf.hover, "Hover Documentation")
-    nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
-
-    -- Lesser used LSP functionality
-    nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
-    nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
-    nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-    nmap("<leader>wl", function()
-        print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
-    end, "[W]orkspace [L]ist Folders")
-
-    -- Create a command `:Format` local to the LSP buffer
-    vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-        vim.lsp.buf.format()
-    end, { desc = "Format current buffer with LSP" })
-end
+-- Add mapping for lazygit
+vim.keymap.set("n", "<leader>l", "<cmd>LazyGit<cr>", { desc = "Lazy Git" })

@@ -2,14 +2,22 @@
 
 ## Tools
 1. `bat` for `cat` replacement
+1. `bear` for creating a `compile_commands.json`
 1. `eza` for `ls`
+1. `fastfetch` for a nice system info command
+1. `fisher` for managing fish plugins
+1. `fd` for a better `find` alternative
 1. `fish` for my `shell`
 1. `fzf` for fuzzy finder in cli for `history` and files
 1. `git` for `git` duh...
 1. `neovim` for my `$EDITOR`
+1. `rink` for our calculator support
 1. `ripgrep` for a better `grep` alternative
 1. `starship` for my prompt
+1. `thefuck` for quickly fixing typo in commands
+1. `tldr` for a nice short alternative to man pages
 1. `tmux` for my terminal multiplexer
+1. `findex` for my launcher
 1. `zoxide` for navigation (alternative to `cd` command)
 
 ## Requirements
@@ -19,22 +27,29 @@
 paru -Syu \
     alacritty \
     bat \
+    bear \
     btop \
     eza \
+    fastfetch \
+    fisher \
+    fd \
     fish \
     fzf \
     git \
     go \
     lazygit \
-    neofetch \
     neovim \
     nodejs \
     npm \
+    rink \
     ripgrep \
     rust \
     starship \
     stow \
+    thefuck \
+    tldr \
     tmux \
+    findex \
     zoxide
 ```
 
@@ -43,6 +58,7 @@ paru -Syu \
 brew install \
     alacritty \
     bat \
+    bear \
     btop \
     eza \
     fish \
@@ -50,7 +66,9 @@ brew install \
     git \
     go \
     lazygit \
-    neofetch \
+    fastfetch \
+    fisher \
+    fd \
     neovim \
     nodejs \
     npm \
@@ -58,6 +76,8 @@ brew install \
     rust \
     starship \
     stow \
+    thefuck \
+    tldr \
     tmux \
     zoxide
 ```
@@ -80,19 +100,24 @@ sudo install lazygit /usr/local/bin
 sudo apt install \
     alacritty \
     bat \
+    bear \
     btop \
     eza \
     fish \
     fzf \
     git \
     golang \
-    neofetch \
+    fastfetch \
+    fisher \
+    fd \
     neovim \
     nodejs \
     npm \
     ripgrep \
     rustup \
     stow \
+    thefuck \
+    tldr \
     tmux \
     zoxide
 ```

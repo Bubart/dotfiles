@@ -3,11 +3,12 @@
 set fish_greeting
 
 # Set some stuff for out path
-fish_add_path -g /opt/homebrew/bin
-fish_add_path -g /opt/homebrew/opt/llvm/bin
 fish_add_path -g ~/.cargo/bin
 fish_add_path -g ~/.files/bin
 fish_add_path -g ~/.local/bin
+fish_add_path -g /opt/homebrew/bin
+fish_add_path -g /opt/homebrew/opt/m4/bin
+fish_add_path -g /opt/homebrew/opt/llvm/bin
 
 # Set default editor to vim
 set -gx EDITOR nvim
@@ -15,14 +16,41 @@ set -gx EDITOR nvim
 # Disable MANGOHUD by default
 set -gx MANGOHUD 0
 
-# Add makeflags
-set -gx MAKEFLAGS "-j$(nproc)"
+# Set JOSBS
+set -gx JOBS "$(nproc)"
 
-# Setup our default FZF command
-set -gx FZF_DEFAULT_COMMAND "rg --files --hidden -g '!.git'"
-set -gx FZF_CTRL_T_COMMAND "$FZF_DEFAULT_COMMAND"
+# Add makeflags
+set -gx MAKEFLAGS "-j$JOBS"
+
+# Set paru pager
+set -gx PARU_PAGER "bat --color=always"
+
+# FZF theme
 set -gx FZF_CTRL_T_OPTS "--preview 'bat -n --color=always {}'"
-set -gx FZF_DEFAULT_OPTS "--height 100%"
+set -gx FZF_DEFAULT_OPTS "$FZF_DEFAULT_OPTS \
+    --height 100%
+    --highlight-line \
+    --info=inline-right \
+    --ansi \
+    --layout=reverse \
+    --border=none
+    --color=bg+:#283457 \
+    --color=bg:#16161e \
+    --color=border:#27a1b9 \
+    --color=fg:#c0caf5 \
+    --color=gutter:#16161e \
+    --color=header:#ff9e64 \
+    --color=hl+:#2ac3de \
+    --color=hl:#2ac3de \
+    --color=info:#545c7e \
+    --color=marker:#ff007c \
+    --color=pointer:#ff007c \
+    --color=prompt:#2ac3de \
+    --color=query:#c0caf5:regular \
+    --color=scrollbar:#27a1b9 \
+    --color=separator:#ff9e64 \
+    --color=spinner:#ff007c \
+    "
 
 # Check for batcat
 if command -v batcat > /dev/null
@@ -38,6 +66,12 @@ end
 alias cat "bat --plain"
 alias less cat
 
+# Alias fk to fuck command
+alias fk fuck
+
+# Alias for cmatrix
+alias c cmatrix
+
 # Replace diff command with a more usefull git command
 function diff
     git diff --name-only --relative --diff-filter=d | xargs bat --diff
@@ -49,12 +83,17 @@ function got
     git $argv
 end
 
+# More git
 alias gti got
 alias gto got
 alias tgi got
 
-# neofetch
-alias n neofetch
+# fastfetch
+alias n fastfetch
+alias f fastfetch
+
+# Alias for lazygit
+alias lg lazygit
 
 # Replace man with command for colorfull man calls
 function man
@@ -113,6 +152,7 @@ set -g fish_color_keyword $pink
 set -g fish_color_quote $yellow
 set -g fish_color_redirection $foreground
 set -g fish_color_end $orange
+set -g fish_color_option $pink
 set -g fish_color_error $red
 set -g fish_color_param $purple
 set -g fish_color_comment $comment
@@ -129,22 +169,38 @@ set -g fish_pager_color_completion $foreground
 set -g fish_pager_color_description $comment
 set -g fish_pager_color_selected_background --background=$selection
 
-# Load fzf
-type -q fzf_key_bindings && fzf_key_bindings
-
 # Turn on vi mode for fish
 fish_vi_key_bindings
 
-# Lets bind fzf for our / and ? search
-function fish_user_key_bindings
-    bind -M default / fzf-history-widget
-    bind -M default \? fzf-file-widget
-end
+# Load fzf
+type -q fzf_key_bindings && fzf_key_bindings
+
+# Disable ctrl-d for fish quit/exit
+bind --mode insert \cd false
+bind --mode default \cd false
+
+# FZF binds
+type -q fzf_configure_bindings && fzf_configure_bindings \
+    --directory=\cd \
+    --git_log=\ch \
+    --git_status=\cg \
+    --variables=\cv \
+    --processes=\cp
 
 # Load zoxide
-zoxide init fish --cmd cd | source
+if command -v zoxide > /dev/null
+    zoxide init fish --cmd cd | source
+end
 
 # Load starship prompt
-starship init fish | source
+if command -v starship > /dev/null
+    starship init fish | source
+end
+
+# Load the fuck
+if command -v thefuck > /dev/null
+    thefuck --alias | source
+end
+
 set PATH $HOME/.phpenv/bin $PATH
 phpenv init - | source

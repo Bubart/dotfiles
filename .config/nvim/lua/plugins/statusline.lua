@@ -4,9 +4,13 @@ return { -- Set lualine as statusline
     opts = {
         options = {
             icons_enabled = true,
-            theme = "tokyonight",
+            theme = "auto",
             component_separators = "|",
             section_separators = "",
         },
-    },
+
+        tabline = {
+            lualine_a = { "tabs" },
+        },
+    }
 }

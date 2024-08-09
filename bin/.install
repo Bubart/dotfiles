@@ -2,7 +2,7 @@
 
 # Where is the DIR for dotfiles?
 DOTFILES="${HOME}/.files"
-TPM="${HOME}/.tmux/plugins/tpm"
+TPM="${HOME}/.config/tmux/plugins/tpm"
 
 # Clone dotfiles if we don't have it cloned yet
 # Or update if we have it
@@ -12,6 +12,9 @@ git stash
 git pull
 git stash pop
 stow --adopt .
+fish -c "bat cache --build"
+fish -c "curl -sL https://raw.githubusercontent.com/jorgebucaran/fisher/main/functions/fisher.fish | source && fisher update"
+nvim --headless "+Lazy! update" +qa
 popd
 
 # Clone tpm if we don't have it cloned yet
