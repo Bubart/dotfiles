@@ -146,3 +146,5 @@ zoxide init fish --cmd cd | source
 
 # Load starship prompt
 starship init fish | source
+set PATH $HOME/.phpenv/bin $PATH
+phpenv init - | source
