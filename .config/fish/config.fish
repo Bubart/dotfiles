@@ -130,9 +130,6 @@ alias vim nvim
 alias vd "nvim -d"
 alias vimdiff "nvim -d"
 
-# PHP
-alias php "php74"
-
 # TokyoNight Color Palette
 set -l foreground c0caf5
 set -l selection 283457
