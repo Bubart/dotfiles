@@ -6,6 +6,7 @@ set fish_greeting
 fish_add_path -g ~/.cargo/bin
 fish_add_path -g ~/.files/bin
 fish_add_path -g ~/.local/bin
+fish_add_path -g ~/.config/composer/vendor/bin
 fish_add_path -g /opt/homebrew/bin
 fish_add_path -g /opt/homebrew/opt/m4/bin
 fish_add_path -g /opt/homebrew/opt/llvm/bin
@@ -87,10 +88,13 @@ end
 alias gti got
 alias gto got
 alias tgi got
+alias gut got
+alias fur got
+alias hot got
 
 # fastfetch
-alias n fastfetch
 alias f fastfetch
+alias ff fastfetch
 
 # Alias for lazygit
 alias lg lazygit
@@ -106,8 +110,8 @@ function help
 end
 
 # Alias for quick and dirty git commit
-alias g "git commit -am 'Updates!'; git pull; git push"
-alias gg "git add .; git commit -m 'Witness me!!!'; git pull; git push"
+alias g "git commit -am 'updates'; git pull; git push"
+alias gg "git add .; git commit -m 'WITNESS US'; git pull; git push"
 
 # Add navcoin alias
 alias nav navcoin-cli
@@ -122,6 +126,9 @@ alias tree "eza --tree"
 alias l "ls -lF"
 alias la "ls -aF"
 alias ll "ls -alF"
+
+# Clear alias
+alias cl clear
 
 # I want v to open vi and vi to open vim
 alias v nvim
