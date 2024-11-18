@@ -42,7 +42,7 @@ color = '#db4b4b'
 TERM = "xterm-256color"
 
 [font]
-size = 14
+size = 10
 
 [font.normal]
 family = "Hack Nerd Font Mono"

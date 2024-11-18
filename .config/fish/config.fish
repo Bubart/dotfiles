@@ -210,3 +210,6 @@ end
 if command -v thefuck >/dev/null
     thefuck --alias | source
 end
+
+set PATH $HOME/.phpenv/bin $PATH
+phpenv init - | source
