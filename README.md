@@ -7,31 +7,34 @@
 1. `eza` for `ls`
 1. `fastfetch` for a nice system info command
 1. `fd` for a better `find` alternative
-1. `findex` for my launcher
 1. `fish` for my `shell`
 1. `fisher` for managing fish plugins
 1. `fzf` for fuzzy finder in cli for `history` and files
 1. `git` for `git` duh...
+1. `kanata` for keyboard custom bindings
+1. `findex` for my launcher
 1. `kweri` a simple cli tool for using search engines via default browser
 1. `neovim` for my `$EDITOR`
 1. `quoty` for random programmer quotes to use with commit messages
-1. `rink` for our calculator support
 1. `ripgrep` for a better `grep` alternative
 1. `starship` for my prompt
-1. `tldr` for a nice short alternative to man pages
+1. `tealdeer` for a nice short alternative to man pages
 1. `tmux` for my terminal multiplexer
 1. `zoxide` for navigation (alternative to `cd` command)
 
 ## Requirements
 
-### via Cargo
+### Arch
 
 ```sh
-cargo install quoty
-cargo install kweri
+sudo pacman -S --needed base-devel rustup
+rustup install stable
+git clone https://aur.archlinux.org/paru.git
+cd paru
+makepkg -si
+cd ..
+rm -rf paru
 ```
-
-### Arch
 
 ```sh
 paru -S \
@@ -42,22 +45,23 @@ paru -S \
     eza \
     fastfetch \
     fd \
+    findex \
     fish \
     fzf \
     git \
-    go \
+    kanata \
     lazygit \
+    man-db \
     neovim \
     nodejs \
     npm \
-    rink \
     ripgrep \
-    rust \
+    rustup \
     starship \
     stow \
-    tldr \
+    tealdeer \
     tmux \
-    findex \
+    wl-clipboard\
     zoxide
 ```
 
@@ -73,7 +77,6 @@ brew install \
     fish \
     fzf \
     git \
-    go \
     lazygit \
     fastfetch \
     fd \
@@ -123,7 +126,6 @@ sudo apt install \
     eza \
     fish \
     git \
-    golang \
     fastfetch \
     fd-find \
     neovim \
@@ -139,12 +141,14 @@ sudo apt install \
 
 ```sh
 rustup install stable
+cargo install quoty
+cargo install kweri
 ```
 
 ## Installation
 
 ```sh
-curl -sS https://raw.githubusercontent.com/mxaddict/dotfiles/master/bin/.install | bash
+curl -SsL https://raw.github.com/mxaddict/dotfiles/main/.local/bin/.install | fish
 ```
 
 ## Hyprland
@@ -152,7 +156,7 @@ curl -sS https://raw.githubusercontent.com/mxaddict/dotfiles/master/bin/.install
 ### QT support
 
 ```sh
-paru -S qt5-wayland qt6-wayland qt5ct qt6ct
+paru -S qt5-wayland qt6-wayland
 ```
 
 ### Video Codecs
@@ -172,7 +176,7 @@ sudo systemctl start NetworkManager
 ### Bluez (Bluetooth)
 
 ```sh
-paru -S blueman bluez
+paru -S bluez bluez-utils blueman
 sudo systemctl enable bluetooth
 sudo systemctl start bluetooth
 ```
@@ -183,16 +187,29 @@ sudo systemctl start bluetooth
 paru -S bind
 ```
 
-### Pipewire (Audio)
+### Pipewire (Audio) and xdg-portal
 
 ```sh
-paru -S pipewire pipewire-alsa pipewire-pulse pavucontrol wireplumber
+paru -S \
+    sof-firmware \
+    alsa-firmware \
+    alsa-utils \
+    pipewire \
+    pipewire-alsa \
+    pipewire-pulse \
+    pavucontrol \
+    wireplumber \
+    xdg-desktop-portal-hyprland
+
+systemctl --user enable pipewire.service
+systemctl --user enable pipewire-pulse.service
+systemctl --user enable wireplumber.service
 ```
 
-### Notifications / Wallpaper / Waybar / Lockscreen / Color Picker
+### Notifications / Wallpaper / Waybar / Lockscreen / Brightness / Idle / Color Picker
 
 ```sh
-paru -S hyprpaper waybar swaync hyprlock
+paru -S hyprpaper waybar swaync hyprlock hypridle brightnessctl
 ```
 
 ### Fonts
@@ -200,10 +217,10 @@ paru -S hyprpaper waybar swaync hyprlock
 ```sh
 paru -S \
     noto-fonts-cjk \
+    noto-fonts-emoji \
     ttf-font-awesome \
     ttf-hack \
     ttf-hack-nerd \
-    ttf-noto-emoji-monochrome \
     ttf-noto-nerd \
     ttf-roboto \
     ttf-roboto-mono \
@@ -216,35 +233,29 @@ paru -S \
 paru -S grimblast-git kooha wl-clipboard hyprpicker
 ```
 
-### Cursor
+### Themeing
 
 ```sh
-paru -S bibata-cursor-theme
-```
-
-### Icon Theme
-
-```sh
-git clone https://github.com/vinceliuice/Colloid-icon-theme.git colloid --depth=1
-cd colloid
-./install.sh
-cd ..
-rm -rf colloid
-```
-
-### Gtk Theme
-
-```sh
-paru -S gnome-themes-extra gtk-engine-murrine sassc qt6ct
-git clone https://github.com/vinceliuice/Lavanda-gtk-theme.git lavanda --depth=1
-cd lavanda
-./install.sh
-cd ..
-rm -rf lavanda
+paru -S \
+    breeze \
+    breeze-gtk \
+    breeze-plymouth
 ```
 
 ### Util for displays and gtk settings
 
 ```sh
-paru -S nwg-displays nwg-look
+paru -S nwg-displays
+```
+
+### Browser, Files, Calc, Email, etc
+
+```sh
+paru -S chromium firefox thunderbird dolphin kcalc
+```
+
+### Kanata setup
+
+```sh
+.kanata
 ```

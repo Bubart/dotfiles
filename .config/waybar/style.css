@@ -1,14 +1,14 @@
 * {
 	border: none;
 	border-radius: 0;
-	font-family: "Hack", "Roboto", "Font Awesome 6 Free";
-	font-weight: bold;
+	font-family: "Hack Nerd Font Mono";
+	font-weight: normal;
 	font-size: 16px;
 	min-height: 16px;
 }
 
 window#waybar {
-	background: rgba(21, 18, 27, 0);
+	background: transparent;
 	color: #cdd6f4;
 }
 
@@ -30,24 +30,24 @@ tooltip {
 #tray,
 #window,
 #workspaces {
-	background: #1e1e2e;
+	background: #1A1B26;
 	opacity: 0.8;
 	padding: 0px 12px;
 	margin: 2px 0px;
 	margin-top: 10px;
-	border: 0px;
+	border: #2BC5E3 2px solid;
 	border-radius: 8px;
 	margin-left: 10px;
 	margin-right: 0px;
 }
 
-#custom-power {
-	color: cyan;
+#workspaces button {
+    padding: 0 10px;
 }
 
 #workspaces button.active,
 #workspaces button:hover {
-	color: #89b4fa;
+	color: #2BC5E3;
 }
 
 #temperature.critical {

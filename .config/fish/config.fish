@@ -4,7 +4,6 @@ set fish_greeting
 
 # Set some stuff for out path
 fish_add_path -g ~/.cargo/bin
-fish_add_path -g ~/.files/bin
 fish_add_path -g ~/.local/bin
 fish_add_path -g ~/.config/composer/vendor/bin
 fish_add_path -g /opt/homebrew/bin
@@ -25,6 +24,7 @@ set -gx MAKEFLAGS "-j$JOBS"
 
 # Set paru pager
 set -gx PARU_PAGER "bat --color=always"
+set -gx MAN_PAGER "bat --color=always"
 
 # FZF theme
 set -gx FZF_CTRL_T_OPTS "--preview 'bat -n --color=always {}'"
@@ -96,16 +96,6 @@ alias ff fastfetch
 # Alias for lazygit
 alias lg lazygit
 
-# Replace man with command for colorfull man calls
-function man
-    /usr/bin/man $argv | bat --plain --language=man
-end
-
-# Replace fish help with command for colorfull help calls
-function help
-    $argv --help 2>&1 | bat --plain --language=help
-end
-
 # Alias for quick and dirty git commit
 alias g 'git commit -am "$(quoty)"; git pull; git push'
 alias gg 'git add . && git commit -m "$(quoty)"; git pull; git push'
@@ -136,6 +126,14 @@ alias vi nvim
 alias vim nvim
 alias vd "nvim -d"
 alias vimdiff "nvim -d"
+
+# Trolling starts here 
+alias code    nvim
+alias emacs   nvim
+alias hx      nvim
+alias nano    nvim
+alias subl    nvim
+alias zeditor nvim
 
 # TokyoNight Color Palette
 set -l foreground c0caf5
