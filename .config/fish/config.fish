@@ -9,6 +9,7 @@ fish_add_path -g ~/.config/composer/vendor/bin
 fish_add_path -g /opt/homebrew/bin
 fish_add_path -g /opt/homebrew/opt/m4/bin
 fish_add_path -g /opt/homebrew/opt/llvm/bin
+fish_add_path -g ~/.phpenv/bin
 
 # Set default editor to vim
 set -gx EDITOR nvim
@@ -209,5 +210,7 @@ if command -v thefuck >/dev/null
     thefuck --alias | source
 end
 
-set PATH $HOME/.phpenv/bin $PATH
-phpenv init - | source
+# Load phpenv
+if command -v phpenv >/dev/null
+    phpenv init - | source
+end
