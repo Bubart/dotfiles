@@ -163,6 +163,10 @@ set -g fish_pager_color_completion $foreground
 set -g fish_pager_color_description $comment
 set -g fish_pager_color_selected_background --background=$selection
 
+#SDKMAN
+set -gx SDKMAN_DIR $HOME/.sdkman
+source ~/.config/fish/functions/sdk.fish
+
 # Turn on vi mode for fish
 fish_vi_key_bindings
 
