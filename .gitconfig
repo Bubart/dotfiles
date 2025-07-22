@@ -1,9 +1,12 @@
 [user]
 	name = Robert Michael Lim
-	email = robert.lim@everymatrix.com
+	email = robertmichaellim@gmail.com
+	signingkey = robertmichaellim@gmail.com
 [color]
 	ui = true
 [core]
 	excludesfile = ~/.gitignore
 [pull]
 	rebase = false
+[commit]
+	gpgsign = true

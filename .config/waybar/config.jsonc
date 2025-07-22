@@ -1,138 +1,155 @@
 {
-	"layer": "top",
-	"position": "top",
-	"mod": "dock",
-	"exclusive": true,
-	"passthrough": false,
-	"gtk-layer-shell": true,
-	"height": 50,
-	"modules-left": ["cpu", "memory", "disk", "battery", "network"],
-	"modules-center": ["hyprland/workspaces"],
-	"modules-right": ["tray", "pulseaudio", "pulseaudio#microphone", "clock", "custom/notification"],
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "exclusive": true,
+    "passthrough": false,
+    "gtk-layer-shell": true,
+    "height": 50,
+    "modules-left": ["custom/power", "battery", "network", "bluetooth"],
+    "modules-center": ["hyprland/workspaces"],
+    "modules-right": [
+        "tray",
+        "pulseaudio",
+        "pulseaudio#microphone",
+        "clock",
+        "custom/notification",
+    ],
 
-	"hyprland/workspaces": {
-		"disable-scroll": true,
-		"all-outputs": true,
-		"format": "{}"
-	},
-
-	"tray": {
-		"icon-size": 18,
-		"spacing": 10
-	},
-
-	"cpu": {
-		"interval": 10,
-		"format": " {usage}%",
-		"on-click": "alacritty -e btop"
-	},
-
-    "battery": {
-        "states": {
-            "half": 50,
-            "warning": 25,
-            "critical": 15
-        },
-        "format": " {capacity}%",
-        "format-half": " {capacity}%",
-        "format-warning": " {capacity}%",
-        "format-critical": " {capacity}%"
+    "hyprland/workspaces": {
+        "all-outputs": true,
+        "format": "{}",
     },
 
-	"memory": {
-		"interval": 10,
-		"format": " {}%",
-		"on-click": "alacritty -e btop"
-	},
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10,
+    },
 
-	"disk": {
-		"interval": 10,
-		"format": " {percentage_used}%",
-		"on-click": "alacritty -e btop"
-	},
+    "cpu": {
+        "format": " {usage}%",
+    },
 
-	"network": {
-		"format-icons": {
-			"wifi": "",
-			"ethernet": ""
-		},
-		"format": " YOU IN THE WOODS?",
-		"format-wifi": "{icon} {essid} ({signalStrength}%)",
-		"format-ethernet": "{icon} {ipaddr}/{cidr}",
-		"max-length": 50,
-		"interval": 10
-	},
+    "memory": {
+        "format": " {}%",
+    },
 
-	"clock": {
-		"format": "{:%Y/%m/%d %H:%M}",
-		"tooltip-format": "<tt><small>{calendar}</small></tt>",
-		"calendar": {
-			"mode"          : "year",
-			"mode-mon-col"  : 3,
-			"weeks-pos"     : "right",
-			"on-scroll"     : 1,
-			"on-click-right": "mode",
-			"format": {
-				"months":     "<span color='#ffead3'><b>{}</b></span>",
-				"days":       "<span color='#ecc6d9'><b>{}</b></span>",
-				"weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
-				"weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
-				"today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
-			}
-		},
-		"actions":  {
-			"on-click-right": "mode",
-			"on-scroll-up": "shift_up",
-			"on-scroll-down": "shift_down"
-		}
-	},
+    "disk": {
+        "format": " {percentage_used}%",
+    },
 
-	"custom/notification": {
-		"tooltip": false,
-		"format": "{icon}",
-		"format-icons": {
-			"notification": "",
-			"none": "",
-			"dnd-notification": "",
-			"dnd-none": "",
-			"inhibited-notification": "",
-			"inhibited-none": "",
-			"dnd-inhibited-notification": "",
-			"dnd-inhibited-none": ""
-		},
-		"return-type": "json",
-		"exec-if": "which swaync-client",
-		"exec": "swaync-client -swb",
-		"on-click": "sleep 0.1 && swaync-client -t -sw",
-		"on-click-right": "sleep 0.1 && swaync-client -d -sw",
-		"escape": true
-	},
+    "bluetooth": {
+        "format-icons": {
+            "default": "",
+            "on": "",
+        },
+        "tooltip-format": "Bluetooth {status}",
+        "format": "{icon}",
+        "format-on": "{icon}",
+        "on-click": "blueman-manager",
+    },
 
-	"pulseaudio": {
-		"format": "{icon} {volume}%",
-		"format-muted": " Muted",
-		"format-icons": {
-			"headphone": "",
-			"hands-free": "",
-			"headset": "",
-			"phone": "",
-			"portable": "",
-			"car": "",
-			"default": ["", "", ""]
-		},
-		"on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
-		"on-click-right": "pavucontrol",
-		"on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -1%",
-		"on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +1%"
-	},
+    "battery": {
+        "format": "{icon}",
+        "format-charging": "",
+        "format-plugged": "",
+        "format-icons": ["", "", "", "", ""],
+        "tooltip-format": "{capacity}% {power}W {timeTo}",
+        "states": {
+            "warning": 30,
+            "critical": 15,
+        },
+    },
 
-	"pulseaudio#microphone": {
-		"format": "{format_source}",
-		"format-source": " {volume}%",
-		"format-source-muted": " Muted",
-		"on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
-		"on-click-right": "pavucontrol",
-		"on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -1%",
-		"on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +1%"
-	}
+    "network": {
+        "format-icons": {
+            "disconnected": "",
+            "default": "",
+            "wifi": "",
+        },
+        "format": "{icon}",
+        "tooltip-format": "{ifname} {ipaddr}/{cidr}",
+        "tooltip-format-wifi": "{ifname} {ipaddr}/{cidr} {essid} ({signalStrength}%)",
+        "tooltip-format-disconnected": "YOU IN THE WOODS?",
+        "on-click": ".menu-wifi",
+    },
+
+    "clock": {
+        "format": "{:%Y/%m/%d %H:%M}",
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "calendar": {
+            "mode": "year",
+            "mode-mon-col": 3,
+            "weeks-pos": "right",
+            "on-scroll": 1,
+            "on-click-right": "mode",
+            "format": {
+                "months": "<span color='#ffead3'><b>{}</b></span>",
+                "days": "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks": "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays": "<span color='#ffcc66'><b>{}</b></span>",
+                "today": "<span color='#ff6699'><b><u>{}</u></b></span>",
+            },
+        },
+        "actions": {
+            "on-click": "mode",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down",
+        },
+    },
+
+    "custom/power": {
+        "tooltip-format": "Power Button",
+        "format": "",
+        "on-click": ".menu-power",
+    },
+
+    "custom/notification": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "notification": "",
+            "none": "",
+            "dnd-notification": "",
+            "dnd-none": "",
+            "inhibited-notification": "",
+            "inhibited-none": "",
+            "dnd-inhibited-notification": "",
+            "dnd-inhibited-none": "",
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client",
+        "exec": "swaync-client -swb",
+        "on-click": "sleep 0.1 && swaync-client -t -sw",
+        "on-click-right": "sleep 0.1 && swaync-client -d -sw",
+        "escape": true,
+    },
+
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " ",
+        "format-icons": {
+            "headphone": "",
+            "hands-free": "",
+            "headset": "",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["", "", ""],
+        },
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle",
+        "on-click-right": "pavucontrol",
+        "on-scroll-down": "pactl set-sink-volume @DEFAULT_SINK@ -5%",
+        "on-scroll-up": "pactl set-sink-volume @DEFAULT_SINK@ +5%",
+    },
+
+    "pulseaudio#microphone": {
+        "format": "{format_source}",
+        "format-source": " {volume}%",
+        "format-source-muted": "",
+        "on-click": "pactl set-source-mute @DEFAULT_SOURCE@ toggle",
+        "on-click-right": "pavucontrol",
+        "on-scroll-down": "pactl set-source-volume @DEFAULT_SOURCE@ -5%",
+        "on-scroll-up": "pactl set-source-volume @DEFAULT_SOURCE@ +5%",
+    },
 }

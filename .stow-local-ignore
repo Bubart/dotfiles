@@ -1,4 +1,7 @@
 .git
-README.md
+.root
+.deps.lock
 FIREWALL.md
+README.md
+SUSPEND.md
 LICENSE
